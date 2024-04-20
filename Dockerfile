@@ -1,6 +1,13 @@
 FROM php:8.3-cli-alpine as sio_test
-RUN apk add --no-cache git zip bash
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+RUN apk add --no-cache \
+    git  \
+    zip  \
+    bash \
+    && install-php-extensions \
+    pdo_pgsql
 
 # Setup php app user
 ARG USER_ID=1000
