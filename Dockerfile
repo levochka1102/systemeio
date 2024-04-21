@@ -16,7 +16,8 @@ USER app
 
 COPY --chown=app . /app
 WORKDIR /app
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 8337
 
-CMD ["php", "-S", "0.0.0.0:8337", "-t", "public"]
+ENTRYPOINT ["./entrypoint.sh"]
