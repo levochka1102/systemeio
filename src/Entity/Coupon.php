@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\CouponRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CouponRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Coupon with this code already exists')]
 class Coupon
 {
     #[ORM\Id]
@@ -13,7 +15,7 @@ class Coupon
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
