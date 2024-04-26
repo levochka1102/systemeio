@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\Product\Entity;
 
-use App\Repository\ProductRepository;
+use App\Product\Repository\ProductRepository;
 use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -23,9 +23,6 @@ class Product
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\Column(length: 3)]
-    private ?string $currencyCode = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -45,19 +42,13 @@ class Product
 
     public function getPrice(): Money
     {
-        return Money::ofMinor($this->price, $this->currencyCode);
+        return Money::ofMinor($this->price, 'EUR');
     }
 
     public function setPrice(Money $price): static
     {
         $this->price = $price->getMinorAmount()->toInt();
-        $this->currencyCode = $price->getCurrency()->getCurrencyCode();
 
         return $this;
-    }
-
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
     }
 }

@@ -4,6 +4,17 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    taxNumberValidationRegexp: /^((DE)?[0-9]{9}|(IT)?[0-9]{11}|(GR)?[0-9]{9}|(FR)?[A-Z]{2}[0-9]{9})$/
+
+    couponTypes:
+        /^\d+\s*\%$/: App\Coupon\Lib\PercentageCouponType
+        /^\d+$/: App\Coupon\Lib\FixedCouponType
+    
+    vat:
+        DE: 19
+        IT: 22
+        FR: 20
+        GR: 24
 
 services:
     # default configuration for services in *this* file

@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Coupon;
-use App\Entity\Product;
+use App\Coupon\Entity\Coupon;
+use App\Product\Entity\Product;
 use Brick\Money\Money;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -51,7 +51,17 @@ class AppFixtures extends Fixture
 
         $coupon = new Coupon();
         $coupon->setCode('COUPON2');
-        $coupon->setValue('50EUR');
+        $coupon->setValue('5000');
+        yield $coupon;
+
+        $coupon = new Coupon();
+        $coupon->setCode('COUPON3');
+        $coupon->setValue('23%');
+        yield $coupon;
+
+        $coupon = new Coupon();
+        $coupon->setCode('COUPON4');
+        $coupon->setValue('525');
         yield $coupon;
     }
 }
