@@ -23,6 +23,7 @@ class CouponRepository extends ServiceEntityRepository
 
     public function findOneByCode(string $value): ?Coupon
     {
+        $value = strtoupper($value);
         return $this->createQueryBuilder('c')
             ->andWhere('c.code = :val')
             ->setParameter('val', $value)
