@@ -40,6 +40,11 @@ class AppFixtures extends Fixture
         $product->setName('Phone Case');
         $product->setPrice(Money::of(10, 'EUR'));
         yield $product;
+
+        $product = new Product();
+        $product->setName('PC');
+        $product->setPrice(Money::of(1005, 'EUR'));
+        yield $product;
     }
 
     private function populateCoupons(): Generator

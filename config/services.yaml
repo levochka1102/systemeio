@@ -4,17 +4,18 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    taxNumberValidationRegexp: /^((DE)?[0-9]{9}|(IT)?[0-9]{11}|(GR)?[0-9]{9}|(FR)?[A-Z]{2}[0-9]{9})$/
-
+    taxNumberValidationRegexp: '/^((DE)?[0-9]{9}|(IT)?[0-9]{11}|(GR)?[0-9]{9}|(FR)?[A-Z]{2}[0-9]{9})$/'
     couponTypes:
-        /^\d+\s*\%$/: App\Coupon\Lib\PercentageCouponType
-        /^\d+$/: App\Coupon\Lib\FixedCouponType
-    
+        /^\d+\s*\%$/: 'App\Coupon\Lib\PercentageCouponType'
+        /^\d+$/: 'App\Coupon\Lib\FixedCouponType'
     vat:
         DE: 19
         IT: 22
         FR: 20
         GR: 24
+    paymentProcessors:
+        paypal: 'payment_processor.paypal'
+        stripe: 'payment_processor.stripe'
 
 services:
     # default configuration for services in *this* file
@@ -33,3 +34,28 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Payment\Lib\PaymentProcessorFactory\Implementation\SymfonyParametersPaymentProcessorFactory:
+        arguments:
+            $container: '@service_container'
+    
+    payment_processor.paypal:
+        class: 'App\Payment\Lib\PaymentProcessor\Implementation\PaypalPaymentProcessor'
+        autowire: false
+        public: true
+        arguments:
+            $paymentProcessor: '@payment_processor.systemeio.paypal'
+
+    payment_processor.systemeio.paypal:
+        class: 'Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor'
+
+    payment_processor.stripe:
+        class: 'App\Payment\Lib\PaymentProcessor\Implementation\StripePaymentProcessor'
+        autowire: false
+        public: true
+        arguments:
+            $paymentProcessor: '@payment_processor.systemeio.stripe'
+
+    payment_processor.systemeio.stripe:
+        class: 'Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor'
+

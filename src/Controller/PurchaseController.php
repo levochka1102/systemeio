@@ -4,25 +4,28 @@ namespace App\Controller;
 
 use App\Coupon\Repository\CouponRepository;
 use App\Product\Repository\ProductRepository;
-use App\Controller\Entity\CalculatePrice;
+use App\Controller\Entity\Purchase;
+use App\Payment\Exception\PurchaseFailedException;
 use App\Payment\GetPrice;
+use App\Payment\Payment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpFoundation\Response;
 
-
-class PriceController extends AbstractController
+class PurchaseController extends AbstractController
 {
-    #[Route('/calculate-price', name: 'calculate_price', methods: ['POST'], format: 'json')]
-    public function calculatePrice(
+    #[Route('/purchase', name: 'purchase', methods: ['POST'], format: 'json')]
+    public function purchase(
         #[MapRequestPayload(acceptFormat: 'json', validationFailedStatusCode: Response::HTTP_BAD_REQUEST)]
-        CalculatePrice $payload,
+        Purchase $payload,
         ProductRepository $productRepository,
         CouponRepository $couponRepository,
         GetPrice $getPrice,
-    ): JsonResponse {
+        Payment $payment,
+    ): Response {
         $product = $productRepository->find($payload->product);
         $coupons = [];
 
@@ -30,8 +33,14 @@ class PriceController extends AbstractController
             $coupons[] = $couponRepository->findOneByCode($payload->couponCode);
         }
 
-        $price = $getPrice->for($payload->taxNumber, [$product], $coupons);
+        $amount = $getPrice->for($payload->taxNumber, [$product], $coupons);
 
-        return $this->json(['price' => $price]);
+        try {
+            $payment->purchase($amount, $payload->paymentProcessor);
+        } catch (PurchaseFailedException $e) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, $e->getMessage(), $e);
+        }
+
+        return new Response(status: Response::HTTP_NO_CONTENT);
     }
 }
