@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+composer install
+
 # dev db
 /app/bin/console doctrine:migrations:migrate first -n
 yes | /app/bin/console doctrine:migrations:migrate
