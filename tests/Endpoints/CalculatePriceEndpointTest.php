@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class PriceConrollerTest extends WebTestCase
+class CalculatePriceEndpointTest extends WebTestCase
 {
     private KernelBrowser $client;
     public function setUp(): void

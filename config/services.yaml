@@ -6,8 +6,8 @@
 parameters:
     taxNumberValidationRegexp: '/^((DE)?[0-9]{9}|(IT)?[0-9]{11}|(GR)?[0-9]{9}|(FR)?[A-Z]{2}[0-9]{9})$/'
     couponTypes:
-        /^\d+\s*\%$/: 'App\Coupon\Lib\PercentageCouponType'
-        /^\d+$/: 'App\Coupon\Lib\FixedCouponType'
+        /^\d+\s*\%$/: 'App\Coupon\Lib\CouponType\Implementation\PercentageCouponType'
+        /^\d+$/: 'App\Coupon\Lib\CouponType\Implementation\FixedCouponType'
     vat:
         DE: 19
         IT: 22

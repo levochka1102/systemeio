@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Coupon\Lib;
+namespace App\Coupon\Lib\CouponTypeFactory\Implementation;
 
 use App\Coupon\Entity\Coupon;
 use App\Coupon\Exception\UnknownCouponTypeException;
+use App\Coupon\Lib\CouponType\CouponType;
+use App\Coupon\Lib\CouponTypeFactory\CouponTypeFactory;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
-class CouponTypeFactory
+class SymfonyCouponTypeFactory implements CouponTypeFactory
 {
     public function __construct(
         private ContainerBagInterface $params,

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Coupon\Lib;
+namespace App\Coupon\Lib\CouponType\Implementation;
 
+use App\Coupon\Lib\CouponType\CouponType;
 use Brick\Money\Money;
 use InvalidArgumentException;
 

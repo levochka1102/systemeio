@@ -3,6 +3,7 @@
 namespace App\Coupon\Lib;
 
 use App\Coupon\Entity\Coupon;
+use App\Coupon\Lib\CouponTypeFactory\CouponTypeFactory;
 use Brick\Money\Money;
 
 final class MakeDiscountProcessor

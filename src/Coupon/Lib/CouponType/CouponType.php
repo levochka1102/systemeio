@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Coupon\Lib;
+namespace App\Coupon\Lib\CouponType;
 
 use Brick\Money\Money;
 
